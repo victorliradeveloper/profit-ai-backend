@@ -1,6 +1,7 @@
 package com.flashcards.infrastructure.security;
 
 import com.flashcards.domain.entity.User;
+import com.flashcards.domain.port.TokenProvider;
 import com.flashcards.domain.repository.UserRepository;
 import com.flashcards.domain.valueobject.Email;
 import jakarta.servlet.FilterChain;
@@ -19,11 +20,11 @@ import java.util.Collections;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
     
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtAuthenticationFilter(TokenProvider tokenProvider, UserRepository userRepository) {
+        this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
     }
     
@@ -36,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = recoverToken(request);
         
         if (token != null) {
-            String email = jwtTokenProvider.validateToken(token);
+            String email = tokenProvider.validateToken(token);
             
             if (email != null) {
                 userRepository.findByEmail(Email.of(email))

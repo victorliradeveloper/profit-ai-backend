@@ -6,19 +6,22 @@ import com.flashcards.domain.valueobject.Email;
 import com.flashcards.infrastructure.persistence.jpa.entity.UserEntity;
 import com.flashcards.infrastructure.persistence.jpa.mapper.UserEntityMapper;
 import com.flashcards.infrastructure.persistence.jpa.repository.JpaUserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
 
+/**
+ * Adaptador que implementa o repositório de domínio usando JPA.
+ * Converte entre entidades de domínio e entidades JPA.
+ */
 @Component
 public class UserRepositoryAdapter implements UserRepository {
     
     private final JpaUserRepository jpaUserRepository;
     private final UserEntityMapper mapper;
     
-    public UserRepositoryAdapter(JpaUserRepository jpaUserRepository, PasswordEncoder passwordEncoder) {
+    public UserRepositoryAdapter(JpaUserRepository jpaUserRepository) {
         this.jpaUserRepository = jpaUserRepository;
-        this.mapper = new UserEntityMapper(passwordEncoder);
+        this.mapper = new UserEntityMapper();
     }
     
     @Override

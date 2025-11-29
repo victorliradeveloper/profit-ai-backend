@@ -1,5 +1,6 @@
 package com.flashcards.domain.entity;
 
+import com.flashcards.domain.port.PasswordEncoder;
 import com.flashcards.domain.valueobject.Email;
 import com.flashcards.domain.valueobject.Password;
 import java.util.Objects;
@@ -41,7 +42,7 @@ public class User {
         this.name = newName.trim();
     }
     
-    public boolean verifyPassword(String plainText, org.springframework.security.crypto.password.PasswordEncoder encoder) {
+    public boolean verifyPassword(String plainText, PasswordEncoder encoder) {
         return password.matches(plainText, encoder);
     }
     

@@ -1,5 +1,6 @@
 package com.flashcards.domain.valueobject;
 
+import com.flashcards.domain.port.PasswordEncoder;
 import java.util.Objects;
 
 public final class Password {
@@ -18,7 +19,7 @@ public final class Password {
         return new Password(hashedValue);
     }
     
-    public static Password fromPlainText(String plainText, org.springframework.security.crypto.password.PasswordEncoder encoder) {
+    public static Password fromPlainText(String plainText, PasswordEncoder encoder) {
         if (plainText == null || plainText.isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
@@ -32,7 +33,7 @@ public final class Password {
         return hashedValue;
     }
     
-    public boolean matches(String plainText, org.springframework.security.crypto.password.PasswordEncoder encoder) {
+    public boolean matches(String plainText, PasswordEncoder encoder) {
         return encoder.matches(plainText, hashedValue);
     }
     

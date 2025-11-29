@@ -4,7 +4,7 @@ API REST para sistema de flashcards com autenticação JWT.
 
 ## 🚀 Tecnologias
 
-- **Java 17**
+- **Java 25**
 - **Spring Boot 4.0.0**
 - **Spring Security** - Autenticação e autorização
 - **Spring Data JPA** - Persistência de dados
@@ -40,6 +40,9 @@ src/
       │          │     │     └── Password.java
       │          │     ├── repository/    # Interfaces de Repositório
       │          │     │     └── UserRepository.java
+      │          │     ├── port/          # Portas (Interfaces de Infraestrutura)
+      │          │     │     ├── PasswordEncoder.java
+      │          │     │     └── TokenProvider.java
       │          │     └── exception/     # Exceções de Domínio
       │          │           ├── InvalidEmailException.java
       │          │           ├── InvalidCredentialsException.java
@@ -61,7 +64,9 @@ src/
       │          │     │                 └── UserRepositoryAdapter.java
       │          │     ├── security/      # Segurança
       │          │     │     ├── JwtTokenProvider.java
-      │          │     │     └── JwtAuthenticationFilter.java
+      │          │     │     ├── JwtTokenProviderAdapter.java
+      │          │     │     ├── JwtAuthenticationFilter.java
+      │          │     │     └── SpringPasswordEncoderAdapter.java
       │          │     ├── config/        # Configurações
       │          │     │     ├── SecurityConfig.java
       │          │     │     └── CorsConfig.java
@@ -97,7 +102,7 @@ api.security.token.expiration-hours=2
 
 ### Pré-requisitos
 
-- Java 17 ou superior
+- Java 25
 - Maven 3.6+ (ou use o Maven Wrapper incluído)
 
 ### Executar a aplicação
@@ -210,9 +215,18 @@ curl -X POST http://localhost:8080/auth/login \
 
 O projeto segue os princípios de **Clean Architecture** e **DDD (Domain-Driven Design)**:
 
-- **Domain Layer**: Contém as regras de negócio e entidades
-- **Application Layer**: Contém os casos de uso e DTOs
-- **Infrastructure Layer**: Contém implementações técnicas (JPA, Security, Controllers)
+### Camadas
+
+- **Domain Layer**: Contém as regras de negócio, entidades, value objects, portas (interfaces) e exceções de domínio
+- **Application Layer**: Contém os casos de uso (Use Cases), DTOs e mappers
+- **Infrastructure Layer**: Contém implementações técnicas (JPA, Security, Controllers) e adaptadores que implementam as portas do domínio
+
+### Princípios Aplicados
+
+- **Dependency Inversion**: O domínio define interfaces (portas), a infraestrutura implementa
+- **Separation of Concerns**: Cada camada tem responsabilidades bem definidas
+- **Ports & Adapters**: Uso de portas no domínio e adaptadores na infraestrutura
+- **Rich Domain Model**: Entidades com lógica de negócio, não apenas getters/setters
 
 ## 📝 Notas
 

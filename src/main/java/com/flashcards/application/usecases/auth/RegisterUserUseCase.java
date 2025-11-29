@@ -6,10 +6,10 @@ import com.flashcards.application.mapper.UserMapper;
 import com.flashcards.domain.entity.User;
 import com.flashcards.domain.exception.UserAlreadyExistsException;
 import com.flashcards.domain.repository.UserRepository;
+import com.flashcards.domain.port.PasswordEncoder;
+import com.flashcards.domain.port.TokenProvider;
 import com.flashcards.domain.valueobject.Email;
 import com.flashcards.domain.valueobject.Password;
-import com.flashcards.infrastructure.security.JwtTokenProvider;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,15 +17,15 @@ public class RegisterUserUseCase {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
     
     public RegisterUserUseCase(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            JwtTokenProvider jwtTokenProvider) {
+            TokenProvider tokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.tokenProvider = tokenProvider;
     }
     
     public LoginResponse execute(RegisterRequest request) {
@@ -40,7 +40,7 @@ public class RegisterUserUseCase {
         
         User savedUser = userRepository.save(user);
         
-        String token = jwtTokenProvider.generateToken(savedUser);
+        String token = tokenProvider.generateToken(savedUser);
         
         return UserMapper.toLoginResponse(savedUser, token);
     }

@@ -7,9 +7,9 @@ import com.flashcards.domain.entity.User;
 import com.flashcards.domain.exception.InvalidCredentialsException;
 import com.flashcards.domain.exception.UserNotFoundException;
 import com.flashcards.domain.repository.UserRepository;
+import com.flashcards.domain.port.PasswordEncoder;
+import com.flashcards.domain.port.TokenProvider;
 import com.flashcards.domain.valueobject.Email;
-import com.flashcards.infrastructure.security.JwtTokenProvider;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,15 +17,15 @@ public class LoginUseCase {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
     
     public LoginUseCase(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            JwtTokenProvider jwtTokenProvider) {
+            TokenProvider tokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.tokenProvider = tokenProvider;
     }
     
     public LoginResponse execute(LoginRequest request) {
@@ -38,7 +38,7 @@ public class LoginUseCase {
             throw new InvalidCredentialsException("Invalid password");
         }
         
-        String token = jwtTokenProvider.generateToken(user);
+        String token = tokenProvider.generateToken(user);
         
         return UserMapper.toLoginResponse(user, token);
     }
