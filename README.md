@@ -14,60 +14,69 @@ API REST para sistema de flashcards com autenticação JWT.
 
 ## 📁 Estrutura do Projeto
 
+O projeto segue uma **organização por módulo/feature**, facilitando a escalabilidade:
+
 ```
 src/
  └── main/
       ├── java/
       │    └── com/flashcards/
       │          ├── application/          # Camada de Aplicação
-      │          │     ├── dto/           # Data Transfer Objects
-      │          │     │     └── auth/
-      │          │     │           ├── LoginRequest.java
-      │          │     │           ├── LoginResponse.java
-      │          │     │           └── RegisterRequest.java
-      │          │     ├── mapper/        # Mappers
-      │          │     │     └── UserMapper.java
-      │          │     └── usecases/      # Casos de Uso
-      │          │           └── auth/
-      │          │                 ├── LoginUseCase.java
-      │          │                 └── RegisterUserUseCase.java
+      │          │     ├── auth/          # Módulo de Autenticação
+      │          │     │     ├── dto/     # Data Transfer Objects
+      │          │     │     │     ├── LoginRequest.java
+      │          │     │     │     ├── LoginResponse.java
+      │          │     │     │     └── RegisterRequest.java
+      │          │     │     ├── mapper/  # Mappers
+      │          │     │     │     └── UserMapper.java
+      │          │     │     └── usecases/ # Casos de Uso
+      │          │     │           ├── LoginUseCase.java          # Interface
+      │          │     │           ├── LoginUseCaseImpl.java     # Implementação
+      │          │     │           ├── RegisterUserUseCase.java  # Interface
+      │          │     │           └── RegisterUserUseCaseImpl.java
+      │          │     └── flashcards/   # Módulo de Flashcards (futuro)
       │          │
       │          ├── domain/              # Camada de Domínio
-      │          │     ├── entity/        # Entidades
-      │          │     │     └── User.java
-      │          │     ├── valueobject/    # Value Objects
-      │          │     │     ├── Email.java
-      │          │     │     └── Password.java
-      │          │     ├── repository/    # Interfaces de Repositório
-      │          │     │     └── UserRepository.java
-      │          │     ├── port/          # Portas (Interfaces de Infraestrutura)
-      │          │     │     ├── PasswordEncoder.java
-      │          │     │     └── TokenProvider.java
-      │          │     └── exception/     # Exceções de Domínio
-      │          │           ├── InvalidEmailException.java
-      │          │           ├── InvalidCredentialsException.java
-      │          │           ├── UserAlreadyExistsException.java
-      │          │           └── UserNotFoundException.java
+      │          │     ├── auth/          # Subdomínio de Autenticação
+      │          │     │     ├── entity/  # Entidades
+      │          │     │     │     └── User.java
+      │          │     │     ├── valueobject/ # Value Objects
+      │          │     │     │     ├── Email.java
+      │          │     │     │     └── Password.java
+      │          │     │     ├── repository/ # Interfaces de Repositório
+      │          │     │     │     └── UserRepository.java
+      │          │     │     ├── port/    # Portas (Interfaces de Infraestrutura)
+      │          │     │     │     ├── PasswordEncoder.java
+      │          │     │     │     └── TokenProvider.java
+      │          │     │     └── exception/ # Exceções de Domínio
+      │          │     │           ├── InvalidEmailException.java
+      │          │     │           ├── InvalidCredentialsException.java
+      │          │     │           ├── UserAlreadyExistsException.java
+      │          │     │           └── UserNotFoundException.java
+      │          │     └── flashcards/    # Subdomínio de Flashcards (futuro)
       │          │
       │          ├── infrastructure/       # Camada de Infraestrutura
-      │          │     ├── controller/   # Controllers REST
-      │          │     │     └── AuthController.java
-      │          │     ├── persistence/   # Persistência JPA
-      │          │     │     └── jpa/
-      │          │     │           ├── entity/
-      │          │     │           │     └── UserEntity.java
-      │          │     │           ├── repository/
-      │          │     │           │     └── JpaUserRepository.java
-      │          │     │           ├── mapper/
-      │          │     │           │     └── UserEntityMapper.java
-      │          │     │           └── adapter/
-      │          │     │                 └── UserRepositoryAdapter.java
-      │          │     ├── security/      # Segurança
-      │          │     │     ├── JwtTokenProvider.java
-      │          │     │     ├── JwtTokenProviderAdapter.java
-      │          │     │     ├── JwtAuthenticationFilter.java
-      │          │     │     └── SpringPasswordEncoderAdapter.java
-      │          │     ├── config/        # Configurações
+      │          │     ├── auth/          # Módulo de Autenticação
+      │          │     │     ├── controller/ # Controllers REST
+      │          │     │     │     └── AuthController.java
+      │          │     │     ├── persistence/ # Persistência JPA
+      │          │     │     │     └── jpa/
+      │          │     │     │           ├── entity/
+      │          │     │     │           │     └── UserEntity.java
+      │          │     │     │           ├── repository/
+      │          │     │     │           │     └── JpaUserRepository.java
+      │          │     │     │           ├── mapper/
+      │          │     │     │           │     └── UserEntityMapper.java
+      │          │     │     │           └── adapter/
+      │          │     │     │                 └── UserRepositoryAdapter.java
+      │          │     │     ├── security/ # Segurança
+      │          │     │     │     ├── JwtTokenProvider.java
+      │          │     │     │     ├── JwtTokenProviderAdapter.java
+      │          │     │     │     ├── JwtAuthenticationFilter.java
+      │          │     │     │     └── SpringPasswordEncoderAdapter.java
+      │          │     │     └── config/  # Configurações do módulo
+      │          │     │           └── AuthUseCaseConfig.java
+      │          │     ├── config/        # Configurações globais
       │          │     │     ├── SecurityConfig.java
       │          │     │     └── CorsConfig.java
       │          │     └── exception/     # Exception Handlers

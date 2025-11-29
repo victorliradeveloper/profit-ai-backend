@@ -1,9 +1,9 @@
 package com.flashcards.infrastructure.exception;
 
-import com.flashcards.domain.exception.InvalidCredentialsException;
-import com.flashcards.domain.exception.InvalidEmailException;
-import com.flashcards.domain.exception.UserAlreadyExistsException;
-import com.flashcards.domain.exception.UserNotFoundException;
+import com.flashcards.domain.auth.exception.InvalidCredentialsException;
+import com.flashcards.domain.auth.exception.InvalidEmailException;
+import com.flashcards.domain.auth.exception.UserAlreadyExistsException;
+import com.flashcards.domain.auth.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

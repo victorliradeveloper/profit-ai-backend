@@ -1,6 +1,6 @@
 package com.flashcards.infrastructure.config;
 
-import com.flashcards.infrastructure.security.JwtAuthenticationFilter;
+import com.flashcards.infrastructure.auth.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
