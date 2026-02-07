@@ -1,7 +1,10 @@
 package com.flashcards.infrastructure.s3.controller;
 
-import com.flashcards.application.s3.usecases.S3UseCase;
+import com.flashcards.application.s3.usecases.DownloadObjectUseCase;
+import com.flashcards.application.s3.usecases.UploadObjectUseCase;
+import com.flashcards.domain.s3.valueobject.StoredObject;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
@@ -13,24 +16,29 @@ import java.io.IOException;
 @RequestMapping("/v1/s3")
 public class S3Controller {
 
-    private final S3UseCase s3Service;
+    private final UploadObjectUseCase uploadObjectUseCase;
+    private final DownloadObjectUseCase downloadObjectUseCase;
 
-    public S3Controller(S3UseCase s3Service) {
-        this.s3Service = s3Service;
+    public S3Controller(UploadObjectUseCase uploadObjectUseCase, DownloadObjectUseCase downloadObjectUseCase) {
+        this.uploadObjectUseCase = uploadObjectUseCase;
+        this.downloadObjectUseCase = downloadObjectUseCase;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<UploadResponse> upload(@RequestParam("file") MultipartFile file) throws IOException {
-        String key = s3Service.uploadFile(file);
+        String key = uploadObjectUseCase.execute(file.getOriginalFilename(), file.getContentType(), file.getBytes());
         return ResponseEntity.ok(new UploadResponse(key));
     }
 
     @GetMapping("/download/{filename}")
     public ResponseEntity<byte[]> download(@PathVariable String filename) {
-        byte[] data = s3Service.downloadFile(filename);
+        StoredObject storedObject = downloadObjectUseCase.execute(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-                .body(data);
+                .contentType(MediaType.parseMediaType(
+                        storedObject.contentType() == null ? MediaType.APPLICATION_OCTET_STREAM_VALUE : storedObject.contentType()
+                ))
+                .body(storedObject.bytes());
     }
 
     public record UploadResponse(String key) {}
