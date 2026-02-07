@@ -1,23 +1,28 @@
 package com.flashcards.infrastructure.s3.controller;
 
 import com.flashcards.application.s3.usecases.S3UseCase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 @RestController
+@RequestMapping("/v1/s3")
 public class S3Controller {
-    @Autowired
-    private S3UseCase s3Service;
+
+    private final S3UseCase s3Service;
+
+    public S3Controller(S3UseCase s3Service) {
+        this.s3Service = s3Service;
+    }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) throws IOException, IOException {
-        s3Service.uploadFile(file);
-        return ResponseEntity.ok("File uploaded successfully!");
+    public ResponseEntity<UploadResponse> upload(@RequestParam("file") MultipartFile file) throws IOException {
+        String key = s3Service.uploadFile(file);
+        return ResponseEntity.ok(new UploadResponse(key));
     }
 
     @GetMapping("/download/{filename}")
@@ -27,4 +32,6 @@ public class S3Controller {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
                 .body(data);
     }
+
+    public record UploadResponse(String key) {}
 }

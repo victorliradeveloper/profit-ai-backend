@@ -11,24 +11,30 @@ public class User {
     private String name;
     private Email email;
     private Password password;
+    private String avatarKey;
     
     private User() {
         // Private constructor for frameworks
     }
     
-    private User(String id, String name, Email email, Password password) {
+    private User(String id, String name, Email email, Password password, String avatarKey) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.avatarKey = avatarKey;
     }
     
     public static User create(String name, Email email, Password password) {
-        return new User(UUID.randomUUID().toString(), name, email, password);
+        return new User(UUID.randomUUID().toString(), name, email, password, null);
     }
     
     public static User restore(String id, String name, Email email, Password password) {
-        return new User(id, name, email, password);
+        return new User(id, name, email, password, null);
+    }
+
+    public static User restore(String id, String name, Email email, Password password, String avatarKey) {
+        return new User(id, name, email, password, avatarKey);
     }
     
     public void changePassword(Password newPassword) {
@@ -45,6 +51,13 @@ public class User {
     public boolean verifyPassword(String plainText, PasswordEncoder encoder) {
         return password.matches(plainText, encoder);
     }
+
+    public void updateAvatarKey(String newAvatarKey) {
+        if (newAvatarKey != null && newAvatarKey.isBlank()) {
+            throw new IllegalArgumentException("Avatar key cannot be blank");
+        }
+        this.avatarKey = (newAvatarKey == null) ? null : newAvatarKey.trim();
+    }
     
     public String getId() {
         return id;
@@ -60,6 +73,10 @@ public class User {
     
     public Password getPassword() {
         return password;
+    }
+
+    public String getAvatarKey() {
+        return avatarKey;
     }
     
     @Override

@@ -24,5 +24,8 @@ public class UserEntity {
     
     @Column(nullable = false)
     private String password;
+
+    @Column(name = "avatar_key")
+    private String avatarKey;
 }
 
