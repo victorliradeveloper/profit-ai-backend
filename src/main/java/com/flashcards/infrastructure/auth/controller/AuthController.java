@@ -4,12 +4,14 @@ import com.flashcards.application.auth.dto.ChangePasswordRequest;
 import com.flashcards.application.auth.dto.LoginRequest;
 import com.flashcards.application.auth.dto.LoginResponse;
 import com.flashcards.application.auth.dto.RegisterRequest;
+import com.flashcards.application.auth.dto.UpdateAvatarRequest;
 import com.flashcards.application.auth.dto.UpdateNameRequest;
 import com.flashcards.application.auth.dto.UserProfileResponse;
 import com.flashcards.application.auth.usecases.ChangePasswordUseCase;
 import com.flashcards.application.auth.usecases.GetUserProfileUseCase;
 import com.flashcards.application.auth.usecases.LoginUseCase;
 import com.flashcards.application.auth.usecases.RegisterUserUseCase;
+import com.flashcards.application.auth.usecases.UpdateUserAvatarUseCase;
 import com.flashcards.application.auth.usecases.UpdateUserUseCase;
 import com.flashcards.domain.auth.entity.User;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,7 @@ public class AuthController {
     private final RegisterUserUseCase registerUserUseCase;
     private final GetUserProfileUseCase getUserProfileUseCase;
     private final UpdateUserUseCase updateUserUseCase;
+    private final UpdateUserAvatarUseCase updateUserAvatarUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
     
     public AuthController(
@@ -33,11 +36,13 @@ public class AuthController {
             RegisterUserUseCase registerUserUseCase,
             GetUserProfileUseCase getUserProfileUseCase,
             UpdateUserUseCase updateUserUseCase,
+            UpdateUserAvatarUseCase updateUserAvatarUseCase,
             ChangePasswordUseCase changePasswordUseCase) {
         this.loginUseCase = loginUseCase;
         this.registerUserUseCase = registerUserUseCase;
         this.getUserProfileUseCase = getUserProfileUseCase;
         this.updateUserUseCase = updateUserUseCase;
+        this.updateUserAvatarUseCase = updateUserAvatarUseCase;
         this.changePasswordUseCase = changePasswordUseCase;
     }
     
@@ -64,6 +69,13 @@ public class AuthController {
     public ResponseEntity<UserProfileResponse> updateProfile(@RequestBody UpdateNameRequest request) {
         User user = getAuthenticatedUser();
         UserProfileResponse response = updateUserUseCase.execute(user, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/profile/avatar")
+    public ResponseEntity<UserProfileResponse> updateAvatar(@RequestBody UpdateAvatarRequest request) {
+        User user = getAuthenticatedUser();
+        UserProfileResponse response = updateUserAvatarUseCase.execute(user, request);
         return ResponseEntity.ok(response);
     }
     

@@ -14,7 +14,8 @@ public class UserMapper {
         return new UserProfileResponse(
                 user.getId(),
                 user.getName(),
-                user.getEmail().getValue()
+                user.getEmail().getValue(),
+                user.getAvatarKey()
         );
     }
 }

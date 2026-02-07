@@ -10,6 +10,8 @@ import com.flashcards.application.auth.usecases.RegisterUserUseCase;
 import com.flashcards.application.auth.usecases.RegisterUserUseCaseImpl;
 import com.flashcards.application.auth.usecases.UpdateUserUseCase;
 import com.flashcards.application.auth.usecases.UpdateUserUseCaseImpl;
+import com.flashcards.application.auth.usecases.UpdateUserAvatarUseCase;
+import com.flashcards.application.auth.usecases.UpdateUserAvatarUseCaseImpl;
 import com.flashcards.domain.auth.port.PasswordEncoder;
 import com.flashcards.domain.auth.port.TokenProvider;
 import com.flashcards.domain.auth.repository.UserRepository;
@@ -48,6 +50,11 @@ public class AuthUseCaseConfig {
     @Bean
     public UpdateUserUseCase updateUserUseCase(UserRepository userRepository) {
         return new UpdateUserUseCaseImpl(userRepository);
+    }
+
+    @Bean
+    public UpdateUserAvatarUseCase updateUserAvatarUseCase(UserRepository userRepository) {
+        return new UpdateUserAvatarUseCaseImpl(userRepository);
     }
     
     @Bean
