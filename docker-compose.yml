@@ -25,6 +25,8 @@ services:
     container_name: flashcards-backend
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/flashcards
       SPRING_DATASOURCE_USERNAME: flashcards_user
