@@ -1,4 +1,4 @@
-# Flashcards API - Backend
+# Profit API - Backend
 
 ## 🚀 Tecnologias
 
