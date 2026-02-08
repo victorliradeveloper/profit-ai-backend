@@ -1,4 +1,4 @@
-# Profit API - Backend
+# ProfitAI - Backend
 
 ## 🚀 Tecnologias
 
