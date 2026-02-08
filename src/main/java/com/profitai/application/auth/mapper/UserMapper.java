@@ -5,19 +5,12 @@ import com.profitai.application.auth.dto.UserProfileResponse;
 import com.profitai.domain.auth.entity.User;
 
 public class UserMapper {
-    
-    public static LoginResponse toLoginResponse(User user, String token) {
-        return new LoginResponse(user.getName(), token);
-    }
-    
-    public static UserProfileResponse toUserProfileResponse(User user) {
-        return new UserProfileResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail().getValue(),
-                user.getAvatarKey()
-        );
-    }
+
+	public static LoginResponse toLoginResponse(User user, String token) {
+		return new LoginResponse(user.getName(), token);
+	}
+
+	public static UserProfileResponse toUserProfileResponse(User user) {
+		return new UserProfileResponse(user.getId(), user.getName(), user.getEmail().getValue(), user.getAvatarKey());
+	}
 }
-
-

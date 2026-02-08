@@ -11,15 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3UseCaseConfig {
 
-    @Bean
-    public UploadObjectUseCase uploadObjectUseCase(ObjectStoragePort objectStoragePort) {
-        return new UploadObjectUseCaseImpl(objectStoragePort);
-    }
+	@Bean
+	public UploadObjectUseCase uploadObjectUseCase(ObjectStoragePort objectStoragePort) {
+		return new UploadObjectUseCaseImpl(objectStoragePort);
+	}
 
-    @Bean
-    public DownloadObjectUseCase downloadObjectUseCase(ObjectStoragePort objectStoragePort) {
-        return new DownloadObjectUseCaseImpl(objectStoragePort);
-    }
+	@Bean
+	public DownloadObjectUseCase downloadObjectUseCase(ObjectStoragePort objectStoragePort) {
+		return new DownloadObjectUseCaseImpl(objectStoragePort);
+	}
 }
-
-

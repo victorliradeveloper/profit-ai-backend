@@ -8,10 +8,9 @@ import com.profitai.domain.auth.entity.User;
  * ImplementaÃ§Ã£o do caso de uso para obter perfil do usuÃ¡rio.
  */
 public class GetUserProfileUseCaseImpl implements GetUserProfileUseCase {
-    
-    @Override
-    public UserProfileResponse execute(User user) {
-        return UserMapper.toUserProfileResponse(user);
-    }
-}
 
+	@Override
+	public UserProfileResponse execute(User user) {
+		return UserMapper.toUserProfileResponse(user);
+	}
+}
