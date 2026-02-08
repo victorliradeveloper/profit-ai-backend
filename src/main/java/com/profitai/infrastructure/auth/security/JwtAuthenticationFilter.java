@@ -1,6 +1,5 @@
 package com.profitai.infrastructure.auth.security;
 
-import com.profitai.domain.auth.entity.User;
 import com.profitai.domain.auth.port.TokenProvider;
 import com.profitai.domain.auth.repository.UserRepository;
 import com.profitai.domain.auth.valueobject.Email;
@@ -19,47 +18,41 @@ import java.util.Collections;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    
-    private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
-    
-    public JwtAuthenticationFilter(TokenProvider tokenProvider, UserRepository userRepository) {
-        this.tokenProvider = tokenProvider;
-        this.userRepository = userRepository;
-    }
-    
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
-        
-        String token = recoverToken(request);
-        
-        if (token != null) {
-            String email = tokenProvider.validateToken(token);
-            
-            if (email != null) {
-                userRepository.findByEmail(Email.of(email))
-                        .ifPresent(user -> {
-                            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-                            var authentication = new UsernamePasswordAuthenticationToken(
-                                    user, null, authorities);
-                            SecurityContextHolder.getContext().setAuthentication(authentication);
-                        });
-            }
-        }
-        
-        filterChain.doFilter(request, response);
-    }
-    
-    private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return null;
-        }
-        return authHeader.replace("Bearer ", "");
-    }
+
+	private final TokenProvider tokenProvider;
+	private final UserRepository userRepository;
+
+	public JwtAuthenticationFilter(TokenProvider tokenProvider, UserRepository userRepository) {
+		this.tokenProvider = tokenProvider;
+		this.userRepository = userRepository;
+	}
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+
+		String token = recoverToken(request);
+
+		if (token != null) {
+			String email = tokenProvider.validateToken(token);
+
+			if (email != null) {
+				userRepository.findByEmail(Email.of(email)).ifPresent(user -> {
+					var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+					var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+					SecurityContextHolder.getContext().setAuthentication(authentication);
+				});
+			}
+		}
+
+		filterChain.doFilter(request, response);
+	}
+
+	private String recoverToken(HttpServletRequest request) {
+		var authHeader = request.getHeader("Authorization");
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			return null;
+		}
+		return authHeader.replace("Bearer ", "");
+	}
 }
-
-

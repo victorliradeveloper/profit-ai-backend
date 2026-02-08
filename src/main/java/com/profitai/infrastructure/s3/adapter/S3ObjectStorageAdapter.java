@@ -14,38 +14,24 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 @Component
 public class S3ObjectStorageAdapter implements ObjectStoragePort {
 
-    private final S3Client s3Client;
-    private final String bucketName;
+	private final S3Client s3Client;
+	private final String bucketName;
 
-    public S3ObjectStorageAdapter(
-            S3Client s3Client,
-            @Value("${aws.bucket.name}") String bucketName
-    ) {
-        this.s3Client = s3Client;
-        this.bucketName = bucketName;
-    }
+	public S3ObjectStorageAdapter(S3Client s3Client, @Value("${aws.bucket.name}") String bucketName) {
+		this.s3Client = s3Client;
+		this.bucketName = bucketName;
+	}
 
-    @Override
-    public void put(String key, byte[] bytes, String contentType) {
-        s3Client.putObject(
-                PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key)
-                        .contentType(contentType)
-                        .build(),
-                RequestBody.fromBytes(bytes)
-        );
-    }
+	@Override
+	public void put(String key, byte[] bytes, String contentType) {
+		s3Client.putObject(PutObjectRequest.builder().bucket(bucketName).key(key).contentType(contentType).build(),
+				RequestBody.fromBytes(bytes));
+	}
 
-    @Override
-    public StoredObject get(String key) {
-        ResponseBytes<GetObjectResponse> objectAsBytes =
-                s3Client.getObjectAsBytes(GetObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key)
-                        .build());
-        return new StoredObject(objectAsBytes.asByteArray(), objectAsBytes.response().contentType());
-    }
+	@Override
+	public StoredObject get(String key) {
+		ResponseBytes<GetObjectResponse> objectAsBytes = s3Client
+				.getObjectAsBytes(GetObjectRequest.builder().bucket(bucketName).key(key).build());
+		return new StoredObject(objectAsBytes.asByteArray(), objectAsBytes.response().contentType());
+	}
 }
-
-
