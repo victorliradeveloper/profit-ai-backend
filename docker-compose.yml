@@ -3,17 +3,17 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: flashcards-postgres
+    container_name: profitai-postgres
     environment:
-      POSTGRES_DB: flashcards
-      POSTGRES_USER: flashcards_user
-      POSTGRES_PASSWORD: flashcards_password
+      POSTGRES_DB: profitai
+      POSTGRES_USER: profitai_user
+      POSTGRES_PASSWORD: profitai_password
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U flashcards_user -d flashcards"]
+      test: ["CMD-SHELL", "pg_isready -U profitai_user -d profitai"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,15 +22,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: flashcards-backend
+    container_name: profitai-backend
     ports:
       - "8080:8080"
     env_file:
       - .env
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/flashcards
-      SPRING_DATASOURCE_USERNAME: flashcards_user
-      SPRING_DATASOURCE_PASSWORD: flashcards_password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/profitai
+      SPRING_DATASOURCE_USERNAME: profitai_user
+      SPRING_DATASOURCE_PASSWORD: profitai_password
     depends_on:
       postgres:
         condition: service_healthy

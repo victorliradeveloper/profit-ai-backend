@@ -8,11 +8,11 @@
 		<version>4.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.flashcards</groupId>
-	<artifactId>flashcards</artifactId>
+	<groupId>com.profitai</groupId>
+	<artifactId>profitai</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>flashcards</name>
-	<description>Demo project for Spring Boot</description>
+	<name>profitai</name>
+	<description>Profit AI Backend</description>
 	<url/>
 	<licenses>
 		<license/>

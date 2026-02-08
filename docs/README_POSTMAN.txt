@@ -1,14 +1,14 @@
 ==========================================
-  POSTMAN COLLECTION - FLASHCARDS API
+  POSTMAN COLLECTION - PROFITAI API
 ==========================================
 
-ARQUIVO: Flashcards_API.postman_collection.json
+ARQUIVO: ProfitAI_API.postman_collection.json
 
 COMO USAR:
 ----------
 1. Abra o Postman
 2. Clique em "Import" (canto superior esquerdo)
-3. Selecione o arquivo "Flashcards_API.postman_collection.json"
+3. Selecione o arquivo "ProfitAI_API.postman_collection.json"
 4. Clique em "Import"
 5. Pronto! A collection já está configurada com todas as variáveis
 
